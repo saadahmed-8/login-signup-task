@@ -52,13 +52,16 @@ export default function Profile() {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
-      const res = await fetch(`/server/user/update/${currentUser._id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch(
+        `http://localhost:3001/server/user/update/${currentUser._id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
       const data = await res.json();
       if (data.success === false) {
         dispatch(updateUserFailure(data.message));
@@ -98,7 +101,7 @@ export default function Profile() {
         return;
       }
       dispatch(signOutUserSuccess());
-      navigate("/log-in");
+      navigate("/");
     } catch (error: any) {
       dispatch(signOutUserFailure(error.message));
     }
@@ -108,19 +111,10 @@ export default function Profile() {
     <div className="p-3 max-w-md mx-auto">
       <h1 className="text-3xl font-semibold text-center my-7">Profile</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input
-          onChange={(e) => setFile(e.target.files?.[0])}
-          type="file"
-          ref={fileRef}
-          hidden
-          accept="image/*"
-        />
-        <img
-          src={formData.avatar || currentUser.avatar}
-          onClick={() => fileRef.current?.click()}
-          alt="profile-picture"
-          className="rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2"
-        />
+        <h1 className="text-3xl font-semibold text-center my-7">
+          User Details
+        </h1>
+
         <p className="text-sm self-center">
           {uploadError ? (
             <span className="text-red-700">
@@ -161,11 +155,6 @@ export default function Profile() {
           className="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80">
           {loading ? "Loading..." : "Update"}
         </button>
-        <Link
-          className="bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:opacity-95"
-          to={"/create-listing"}>
-          Create Listing
-        </Link>
       </form>
 
       <div className="flex justify-between mt-5">

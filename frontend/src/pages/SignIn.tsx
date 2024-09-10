@@ -31,7 +31,7 @@ export default function SignIn() {
     event.preventDefault();
     try {
       dispatch(signInStart());
-      const res = await fetch("/server/auth/log-in", {
+      const res = await fetch("http://localhost:3001/server/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export default function SignIn() {
         return;
       }
       dispatch(signInSuccess(data));
-      navigate("/");
+      navigate("/profile");
     } catch (error) {
       dispatch(signInFailure((error as Error).message));
     }
